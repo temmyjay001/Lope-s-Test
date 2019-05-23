@@ -1,0 +1,33 @@
+{
+  "name": "node.js-ejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "body-parser": "^1.19.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "express-fileupload": "^1.1.4",
+    "express-session": "^1.16.1",
+    "jimp": "^0.6.4",
+    "mysql": "^2.17.1",
+    "req-flash": "^0.0.3",
+    "sharp": "^0.22.1",
+    "then-busboy": "^4.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/temmyjay001/Lope-s-Test.git"
+  },
+  "author": "Ajayi solomon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/temmyjay001/Lope-s-Test/issues"
+  },
+  "homepage": "https://github.com/temmyjay001/Lope-s-Test#readme"
+}
