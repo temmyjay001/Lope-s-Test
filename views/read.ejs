@@ -1,0 +1,70 @@
+<html lang="en">
+    <%- include header %>
+        <div class="container" >
+            <div class="table-responsive" style="">
+                <% if(data.length < 1){ %>
+                  <h2>You have not added any secret </h2>
+                <% }else{  %>
+               
+                  <h2>Go through your archives</h2>
+                <% } %>
+                
+                <table class="table">
+                        <tr>
+                                <td>Title</td>
+                                
+                                <td>Date</td>
+                        </tr>
+                        
+                        <% for(var i=0; i < data.length; i++) { %>
+                            <tr>
+                              
+                              <td><form action="/home/read/getMessage" method="post"><button id="title" name="gMess" data-toggle="modal" data-target="#myModal" class="btn-default btn" value="<%= data[i].Title %>"><%= data[i].Title %></button></form></td>
+                              
+                              <td><%= data[i].Date %></td>
+                              
+                            </tr>
+                        <% } %>
+                        
+                </table>
+            </div>
+        </div>
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+          
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" > <% for(var i=0; i < data.length; i++){ %>
+                                            <%= data[i].Title %>
+                                          <% } %>
+                </h4>
+                </div>
+                <div class="modal-body">
+                  <p> <% for(var i=0; i < data.length; i++){ %>
+                        <%= data[i].Message %>
+                      <% } %></p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+          
+            </div>
+          </div>
+    <script type="text/javascript">
+        var x = document.getElementById("read");
+        var y = document.getElementById("home");
+        y.className = y.className.replace("active","");
+        if(x.className.indexOf("active") == -1 && y.className.indexOf("active") == -1){
+            x.className += " active";
+        }else{
+            y.className = y.className.replace(" active"," ");
+            x.className = x.className.replace(" active","");
+        }
+
+       
+        
+    </script>
+    <%- include footer %>

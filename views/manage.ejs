@@ -1,0 +1,44 @@
+<html lang="en">
+    <%- include header %>
+    
+    <div class="" style="">
+        <h2>Manage your secrets</h2>
+        <form action="">
+          <% if(test.length < 1){%>
+            <div class="alert alert-info col-sm-12">You have not added any secrets</div>
+          <%}%>
+            <table>
+                <% for(var i=0; i < test.length; i++) { %>
+                <tr>
+                        <nav class="navbar navbar-inverse">
+                                <div class="container-fluid">
+                                  <ul class="nav navbar-nav">
+                                    <li class="" style="margin-top:15%; color:white;"><%= test[i].Title %></li>
+                                  </ul>
+                                  <ul class="nav navbar-nav navbar-right">
+                                      <li><a href="#"><span class="glyphicon glyphicon-pencil"></span> Publish</a></li>
+                                    <li><a href="#"><span class="glyphicon glyphicon-pencil"></span> Edit</a></li>
+                                    <li><a href="#"><span class="	glyphicon glyphicon-remove"></span> Delete</a></li>
+                                  </ul>
+                                  
+                                </div>
+                              </nav>
+                </tr>
+                <% } %>
+            </table>
+        </form>
+        <script type="text/javascript">
+            var x = document.getElementById("manage");
+            var y = document.getElementById("home");
+            y.className = y.className.replace("active","");
+            if(x.className.indexOf("active") == -1 && y.className.indexOf("active") == -1){
+                x.className += " active";
+            }else{
+                y.className = y.className.replace(" active"," ");
+                x.className = x.className.replace(" active","");
+            }
+    
+           
+            
+        </script>
+    </div>

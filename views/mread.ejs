@@ -1,0 +1,23 @@
+<html lang="en">
+        <%- include header %>
+        <!-- Main component for a primary marketing message or call to action -->
+        <h2>Read on</h2>
+        <div class="panel panel-info" style="">
+                <div class="panel-heading"><%= test[0].Title %></div>
+                <div class="panel-body"><%= test[0].Message %></div>
+        </div>
+        <script type="text/javascript">
+                var x = document.getElementById("read");
+                var y = document.getElementById("home");
+                y.className = y.className.replace("active","");
+                if(x.className.indexOf("active") == -1 && y.className.indexOf("active") == -1){
+                    x.className += " active";
+                }else{
+                    y.className = y.className.replace(" active"," ");
+                    x.className = x.className.replace(" active","");
+                }
+        
+               
+                
+            </script>
+         <%- include footer %>
