@@ -62,3 +62,5 @@ app.post('/home/read/getMessage',user.getMessage);//redirects the form from read
 app.get('/home/manage',user.manage);//call for manage page
 app.post('/home/manage',user.manage);//call for manage post
 
+
+module.exports = app;

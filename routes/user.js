@@ -72,7 +72,7 @@ exports.signup = (req, res) => {
 //-----------------------------------------------login page call------------------------------------------------------
 exports.login = (req, res) => {
    const bcrypt = require('bcrypt');
-   const message = '';
+   let message = '';
    const sess = req.session; 
 
    if(req.method == "POST"){
