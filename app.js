@@ -1,24 +1,27 @@
 /**
 * Module dependencies.
 */
-var express = require('express')
+const express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
   , fileUpload = require('express-fileupload')
   , bcrypt = require('bcrypt');
-//var methodOverride = require('method-override');
-var session = require('express-session');
-var app = express();
-var mysql      = require('mysql');
-var bodyParser=require("body-parser");
-var connection = mysql.createConnection({
+const session = require('express-session');
+const app = express();
+const mysql      = require('mysql');
+const bodyParser=require("body-parser");
+
+/*
+  Work on converting this database to MongoDb 
+*/ 
+const connection = mysql.createConnection({
               dateStrings :'date',
               host     : 'localhost',
               user     : 'root',
               password : '',
-              database : 'myweb'
+              database : 'Lope'
             });
  
 connection.connect();
@@ -26,7 +29,6 @@ connection.connect();
 global.db = connection;
  
 // all environments
-app.set('port', process.env.PORT || 8000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -38,10 +40,10 @@ app.use(session({
               resave: false,
               saveUninitialized: true,
               cookie: { maxAge: 100000 }
-            }))
+}));
 
 // development only
- 
+// Easy routing for the API
 app.get('/', routes.index);//call for main index page
 app.get('/signup', user.signup);//call for signup page
 app.post('/signup', user.signup);//call for signup post 
@@ -59,5 +61,4 @@ app.get('/home/read/getMessage',user.getMessage);//redirect to mread
 app.post('/home/read/getMessage',user.getMessage);//redirects the form from read to mread page
 app.get('/home/manage',user.manage);//call for manage page
 app.post('/home/manage',user.manage);//call for manage post
-//Middleware
-app.listen(8000);
+

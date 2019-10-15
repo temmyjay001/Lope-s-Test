@@ -1,20 +1,20 @@
 //---------------------------------------------signup page call------------------------------------------------------
-exports.signup = function(req, res){
-   var bcrypt = require('bcrypt');
-   var sharp = require('sharp');
-   var fs = require('fs');
+exports.signup = (req, res) => {
+   const bcrypt = require('bcrypt');
+   const sharp = require('sharp');
+   const fs = require('fs');
    message = '';
    errmessage = '';
-   var saltrounds = 10;
+   const saltrounds = 10;
    if(req.method == "POST"){
-      var post  = req.body;
-      var name= post.user_name;
-      var pass= post.password;
-      var fname= post.first_name;
-      var lname= post.last_name;
-      var mob= post.mob_no;
-      var file = req.files.uploaded_image;
-		var img_name=file.name;
+      const post  = req.body;
+      const name= post.user_name;
+      const pass= post.password;
+      const fname= post.first_name;
+      const lname= post.last_name;
+      const mob= post.mob_no;
+      const file = req.files.uploaded_image;
+		const img_name=file.name;
  
       if (!req.files)
 		return res.status(400).send('No files were uploaded.');
@@ -34,23 +34,23 @@ exports.signup = function(req, res){
 		console.log(file);
 	  	if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){
                                  
-              file.mv('public/images/upload_images/'+file.name, function(err) {
+              file.mv('public/images/upload_images/'+file.name, (err) => {
                              
                if (err)
  
                return res.status(500).send(err);
-               bcrypt.hash(pass,saltrounds, function(err, hash){
+               bcrypt.hash(pass,saltrounds, (err, hash) => {
 
-                  var chk = "SELECT `user_name` FROM `users` WHERE `user_name`='" + name +"'";
-                  var query = db.query(chk, function(err, result) {
+                  const chk = "SELECT `user_name` FROM `users` WHERE `user_name`='" + name +"'";
+                  const query = db.query(chk, (err, result) => {
                   if(result.length > 0){
                      errmessage = "Username already exist, choose a new username.";
                      res.render('signup.ejs',{errmessage: errmessage});
                      console.log(result);
                   }else{
-                     var sql = "INSERT INTO `users`(`first_name`,`last_name`,`image`,`mob_no`,`user_name`, `password`) VALUES ('" + fname + "','" + lname + "','" + img_name + "','" + mob + "','" + name + "','" + hash + "')";
+                     const sql = "INSERT INTO `users`(`first_name`,`last_name`,`image`,`mob_no`,`user_name`, `password`) VALUES ('" + fname + "','" + lname + "','" + img_name + "','" + mob + "','" + name + "','" + hash + "')";
          
-                     var query = db.query(sql, function(err, result) {
+                     const query = db.query(sql, (err, result) => {
                      
                      message = "Succesful! Your account has been created.";
                      res.render('signup.ejs',{message: message});
@@ -70,27 +70,27 @@ exports.signup = function(req, res){
    };
  
 //-----------------------------------------------login page call------------------------------------------------------
-exports.login = function(req, res){
-  const bcrypt = require('bcrypt');
-   var saltrounds = 10;
-   var message = '';
-   var sess = req.session; 
+exports.login = (req, res) => {
+   const bcrypt = require('bcrypt');
+   const message = '';
+   const sess = req.session; 
 
    if(req.method == "POST"){
-      var post  = req.body;
-      var name= post.user_name;
-      var pass= post.password;
-      var p2 = "$2b$10$.N6EYvnD";
-      if(name && pass){
-         var sql="SELECT id, first_name, last_name, user_name, password FROM `users` WHERE `user_name`='"+name+"'";                           
+      const post  = req.body;
+      const name= post.user_name;
+      const pass= post.password;
       
-         db.query(sql, function(err, results){      
+
+      if(name && pass){
+         const sql="SELECT id, first_name, last_name, user_name, password FROM `users` WHERE `user_name`='"+name+"'";                           
+      
+         db.query(sql, (err, results) => {      
          if(results.length > 0){
             req.session.userId = results[0].id;
             req.session.user = results[0];
             console.log(results[0].id);
             console.log(results[0].password);
-            bcrypt.compare(pass,results[0].password, function(err,result){
+            bcrypt.compare(pass,results[0].password, (err,result) => {
                if (err) throw (err);
                console.log(result);
                if(result == true){
@@ -99,9 +99,7 @@ exports.login = function(req, res){
                   message = 'Wrong Credentials.';
                   res.render('index.ejs',{message: message});
                }
-               
-               
-            })
+            });
             
       }
       else{
@@ -119,10 +117,10 @@ exports.login = function(req, res){
       res.render('index.ejs',{message: message});
    }     
 };
-//-----------------------------------------------dashboard page functionality----------------------------------------------
+//-----------------------------------------------dashboard page ality----------------------------------------------
            
-exports.dashboard = function(req, res, next){      
-   var user =  req.session.user,
+exports.dashboard = (req, res, next) => {      
+   const user =  req.session.user,
    userId = req.session.userId;
    console.log('ddd='+userId);
    if(userId == null){
@@ -130,51 +128,53 @@ exports.dashboard = function(req, res, next){
       return;
    }
 
-   var sql="SELECT * FROM `users` WHERE `id`='"+userId+"'";
+   const sql="SELECT * FROM `users` WHERE `id`='"+userId+"'";
 
-   db.query(sql, function(err, results){
+   db.query(sql, (err, results) => {
       res.render('dashboard.ejs', {user:user});    
    });       
 };
-//------------------------------------logout functionality----------------------------------------------
-exports.logout=function(req,res){
-   req.session.destroy(function(err) {
-      res.redirect("/login");
-   })
+//------------------------------------logout ality----------------------------------------------
+exports.logout = (req,res) => {
+   req.session.destroy(
+      (err) => {
+         res.status(200).redirect("/login");
+      }
+   );
 };
 //--------------------------------render user details after login--------------------------------
-exports.profile = function(req, res){
+exports.profile = (req, res) => {
 
-   var userId = req.session.userId;
+   const userId = req.session.userId;
    if(userId == null){
       res.redirect("/login");
       return;
    }
 
-   var sql="SELECT * FROM `users` WHERE `id`='"+userId+"'";          
-   db.query(sql, function(err, result){  
+   const sql="SELECT * FROM `users` WHERE `id`='"+userId+"'";          
+   db.query(sql, (err, result) => {  
       res.render('profile.ejs',{data:result});
    });
 };
 //---------------------------------edit users details after login----------------------------------
-exports.editprofile=function(req,res){
-   var userId = req.session.userId;
+exports.editprofile = (req,res) => {
+   const userId = req.session.userId;
    if(userId == null){
       res.redirect("/login");
       return;
    }
 
-   var sql="SELECT * FROM `users` WHERE `id`='"+userId+"'";
-   db.query(sql, function(err, results){
+   const sql="SELECT * FROM `users` WHERE `id`='"+userId+"'";
+   db.query(sql, (err, results) => {
       res.render('edit_profile.ejs',{data:results});
    });
 };
 //----------------------------------Redirecting to write page------------------------------------------
-exports.write=function(req,res){
+exports.write = (req,res) => {
    
    message='';
    errmessage='';
-   var user =  req.session.user,
+   const user =  req.session.user,
    userId = req.session.userId;
    console.log('ddd='+userId);
    if(userId == null){
@@ -185,49 +185,37 @@ exports.write=function(req,res){
 
     if(req.method == "POST"){
       
-      var post  = req.body;
-      var title= post.title;
-      var date= new Date();
-      var secret = post.secret;
+      const post  = req.body;
+      const title= post.title;
+      const date= new Date();
+      const secret = post.secret;
       console.log(user.user_name);
-      var chk = "SELECT `Title`, `Message`, `Date` FROM `secrets` WHERE `Title` = '"+title+"'";
-      var query = db.query(chk, function(err, result) {
+      const chk = "SELECT `Title`, `Message`, `Date` FROM `secrets` WHERE `Title` = '"+title+"'";
+      const query = db.query(chk, (err, result) => {
          if(result.length > 0){
             errmessage = "There is a secret with this title already";
             res.render('write',{errmessage: errmessage});
             console.log(result);
             
          }else{
-            // var sql = "INSERT INTO `secrets`(`Title`, `Date`, `Message`) VALUES ('" + title + "','" + date + "','" + secret + "'))";
-
-            // var query = db.query(sql, function(err, result) {
-            //    console.log(result);
-            // message = "Your secret has been kept";
-            // res.render('write',{message: message});
-            // });
-            
-               db.query("INSERT INTO `secrets`(`writer`,`Title`, `Message`, `Date`) VALUES (?,?,?,?)",[user.user_name,title,secret,date],function (err, result) {
-               if (err) throw err;
-               message = "Your secret has been kept";
-               console.log("1 secret kept");
-               
-               res.render('write',{message: message});
-              });
+            const  sql= "INSERT INTO `secrets`(`writer`,`Title`, `Message`, `Date`) VALUES (?,?,?,?)";
+            db.query(sql, [user.user_name,title,secret,date], (err, result) => {
+                  if (err) throw err;
+                  message = "Your secret has been kept";
+                  console.log("1 secret kept");
+                  
+                  res.render('write',{message: message});
+               }
+            );
          }
-
-         
       });
-
-
-      
-
-   } else {
+ } else {
       res.render('write');
    }
 }
 
 //-----------------------------------Save data from write page to database--------------------------------
-exports.save=function(req,res){
+exports.save = (req,res) => {
    
    message = '';
    errmessage = '';
@@ -236,36 +224,36 @@ exports.save=function(req,res){
 
 }
 //---------------------------------------------Reading secrets from the database ----------------------------------------
-exports.read=function(req,res){
-   var data = "";
+exports.read = (req,res) => {
+   const data = "";
    message='';
    errmessage='';
-   var user =  req.session.user,
+   const user =  req.session.user,
    userId = req.session.userId;
    console.log('ddd='+userId);
    if(userId == null){
       res.redirect("/login");
       return;
    }
-   var chk = "SELECT `Title`,`Message`,`Date` FROM `secrets` WHERE `writer` ='"+user.user_name+"'";
-   db.query(chk,function(err,result){
+   const chk = "SELECT `Title`,`Message`,`Date` FROM `secrets` WHERE `writer` ='" + user.user_name + "'";
+   db.query(chk,(err,result) => {
       if(err) throw err;
       
       data = result;
       
       console.log(data);
       res.render('read',{data:data});
-   })
+   });
    console.log(user.user_name)
    if(req.method == "POST"){
-      var message="";
-      var post = req.body;
-      var title = post.gMess;
-      var cdk = "SELECT `Title`,`Message`,`Date` FROM `secrets` WHERE `Title` ='"+title+"'";
-      db.query(cdk,function(err,result){
+      const message="";
+      const post = req.body;
+      const title = post.gMess;
+      const cdk = "SELECT `Title`,`Message`,`Date` FROM `secrets` WHERE `Title` ='"+title+"'";
+      db.query(cdk, (err,result) => {
       if(err) throw err;
       
-      var test = result;
+      const test = result;
 
       console.log(test);
       //res.render('read',{message:message});
@@ -274,16 +262,16 @@ exports.read=function(req,res){
    }
 }
 
-exports.getMessage=function(req,res){
+exports.getMessage = (req,res) => {
    
-   var post = req.body;
-   var title = post.gMess;
+   const post = req.body;
+   const title = post.gMess;
    // console.log(user)
-   var chk = "SELECT `Title`,`Message`,`Date` FROM `secrets` WHERE `Title` ='"+title+"'";
-   db.query(chk,function(err,result){
+   const chk = "SELECT `Title`,`Message`,`Date` FROM `secrets` WHERE `Title` ='"+title+"'";
+   db.query(chk,(err,result) => {
       if(err) throw err;
       
-      var test = result;
+      const test = result;
 
       console.log(test);
       res.render('mread',{test:test});
@@ -291,20 +279,20 @@ exports.getMessage=function(req,res){
    })
 }
 
-exports.manage=function(req,res){
-   var post = req.body;
-   var user =  req.session.user,
+exports.manage = (req,res) => {
+   const post = req.body;
+   const user =  req.session.user,
    userId = req.session.userId;
    console.log('ddd='+userId);
    if(userId == null){
       res.redirect("/login");
       return;
    }
-   var chk = "SELECT `Title` FROM `secrets` WHERE  `writer` = '"+user.user_name+"'";
-   db.query(chk,function(err,result){
+   const chk = "SELECT `Title` FROM `secrets` WHERE  `writer` = '"+user.user_name+"'";
+   db.query(chk,(err,result) => {
       if(err) throw err;
       
-      var test = result;
+      const test = result;
 
       console.log(test);
       res.render('manage',{test:test});      

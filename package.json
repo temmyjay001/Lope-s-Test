@@ -1,5 +1,5 @@
 {
-  "name": "node.js-ejs",
+  "name": "Lope's Test",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -14,11 +14,11 @@
     "mysql": "^2.17.1",
     "req-flash": "^0.0.3",
     "sharp": "^0.22.1",
-    "then-busboy": "^4.3.0"
+    "then-busboy": "^4.4.0"
   },
   "devDependencies": {},
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",

@@ -2,7 +2,7 @@
 * GET home page.
 */
  
-exports.index = function(req, res){
+exports.index = (req, res) => {
     var message = '';
   res.render('index',{message: message});
  
